@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import Layouts from '@/components/layouts';
-import { Button, Input } from 'antd';
+import { Button, Form, Input } from 'antd';
 
 import useStore from '@/pages/new-tab/store';
 
@@ -19,17 +19,18 @@ const NewTab = () => {
     });
   }, []);
 
-  //
+  const handleFinish = (values: any) => {
+    window.location.href = `https://www.google.com./search?q=${values.search}`;
+  };
 
   return (
     <Layouts>
       <div className="flex-1 flex justify-center pt-180">
-        <Input
-          className="w-600 h-60 px-24 bg-bg-600  hover:bg-bg-600 focus:bg-bg-600 border-2 rounded-full border-white text-20"
-          onPressEnter={(e) => {
-            window.location.href = `https://www.google.com./search?q=${e.target.value}`;
-          }}
-        />
+        <Form onFinish={handleFinish}>
+          <Form.Item name="search">
+            <Input className="w-600 h-60 px-24 bg-bg-600  hover:bg-bg-600 focus:bg-bg-600 border-2 rounded-full border-white text-20" />
+          </Form.Item>
+        </Form>
       </div>
     </Layouts>
   );

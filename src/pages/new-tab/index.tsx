@@ -32,6 +32,10 @@ const NewTab = () => {
   return (
     <Layouts>
       <div className="flex-1 flex flex-col items-center pt-180">
+        <h1 className="w-600 text-48 mb-24 px-12">
+          嗨<span className=" text-green-700">，</span>
+        </h1>
+
         <Form
           autoComplete="off"
           onFinish={handleFinish}

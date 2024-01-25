@@ -5,7 +5,6 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-
         bg: {
           100: '#6b6b6b',
           200: '#5e5e5e',
@@ -48,6 +47,8 @@ module.exports = {
       margin: {
         4: '4px',
         6: '6px',
+        12: '12px',
+        24: '24px',
       },
       borderRadius: {
         18: '18px',

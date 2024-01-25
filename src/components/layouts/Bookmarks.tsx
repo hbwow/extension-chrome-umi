@@ -30,7 +30,10 @@ Bookmarks.Modal = ({ ...rest }: ModalProps) => {
     <Modal
       title="书签"
       width={MODAL_DEFAULT_WIDTH}
-      classNames={{ body: 'h-420 overflow-y-auto overflow-x-hidden' }}
+      zIndex={9999}
+      classNames={{
+        body: 'h-420 overflow-y-auto  scroll-bar-style overflow-x-hidden',
+      }}
       {...rest}
     />
   );

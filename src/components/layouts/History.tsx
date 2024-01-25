@@ -4,16 +4,16 @@ import useStore from '@/pages/new-tab/store';
 import { MODAL_DEFAULT_WIDTH } from '@/utils/constants';
 
 const History = () => {
-  const { historyItem } = useStore();
+  const { historyItems } = useStore();
 
   return (
     <div>
       <div className="">
-        {historyItem.map((item) => {
+        {historyItems.map((item) => {
           const { id, title, url } = item;
 
           return (
-            <Button className="flex" type="link" key={id} href={url}>
+            <Button className="flex mt-4" type="text" key={id} href={url}>
               <span className="truncate">{title}</span>
             </Button>
           );
@@ -28,7 +28,10 @@ History.Modal = ({ ...rest }: ModalProps) => {
     <Modal
       title="历史记录"
       width={MODAL_DEFAULT_WIDTH}
-      classNames={{ body: 'h-420 overflow-y-auto overflow-x-hidden' }}
+      zIndex={9999}
+      classNames={{
+        body: 'h-420 overflow-y-auto  scroll-bar-style overflow-x-hidden',
+      }}
       {...rest}
     />
   );

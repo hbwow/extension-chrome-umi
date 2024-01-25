@@ -3035,7 +3035,7 @@ export default {
       title: '',
     },
   ],
-  historyItem: [
+  historyItems: [
     {
       id: '61216',
       lastVisitTime: 1705543412321.608,
@@ -3839,6 +3839,44 @@ export default {
       typedCount: 0,
       url: 'https://tanstack.com/query/v3/',
       visitCount: 27,
+    },
+  ],
+  bookmarkSearchResult: [
+    {
+      dateAdded: 1613801475765,
+      dateLastUsed: 1705989810652,
+      id: '488',
+      index: 0,
+      parentId: '487',
+      title: 'QQ邮箱',
+      url: 'https://mail.qq.com/cgi-bin/frame_html?sid=ISrwx4stTqmZRmgI&r=f8a86c5e81d509e1e1bcc0200d5b829b',
+    },
+    {
+      dateAdded: 1613802082531,
+      id: '492',
+      index: 4,
+      parentId: '487',
+      title: '网易邮箱',
+      url: 'https://mail.163.com/js6/main.jsp?sid=CDeyMYOebEWvqXEtWNeeTxusNGiZYvMU&df=mail163_letter#module=welcome.WelcomeModule%7C%7B%7D',
+    },
+  ],
+
+  historySearchResult: [
+    {
+      id: '62020',
+      lastVisitTime: 1706161920924.25,
+      title: '导航菜单 Menu - Ant Design',
+      typedCount: 0,
+      url: 'https://ant.design/components/menu-cn#api',
+      visitCount: 3,
+    },
+    {
+      id: '62022',
+      lastVisitTime: 1706161896127.553,
+      title: '导航菜单 Menu - Ant Design',
+      typedCount: 0,
+      url: 'https://ant.design/components/menu-cn#itemtype',
+      visitCount: 1,
     },
   ],
 };

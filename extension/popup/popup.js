@@ -7,6 +7,6 @@ chrome.bookmarks.getTree(function (bookmarkTreeNode) {
   console.log('🚀🚀🚀 ~ bookmarkTreeNode:', bookmarkTreeNode);
 });
 
-chrome.history.search({ text: '' }, function (historyItem) {
-  console.log('🚀🚀🚀 ~ historyItem:', historyItem);
+chrome.history.search({ text: '' }, function (historyItems) {
+  console.log('🚀🚀🚀 ~ historyItems:', historyItems);
 });

@@ -7,14 +7,14 @@ const { DirectoryTree } = Tree;
 
 const Bookmarks = () => {
   const { bookmarkTreeNode } = useStore();
-  console.log('🚀🚀🚀 ~ bookmarkTreeNode:', bookmarkTreeNode);
+  // console.log('🚀🚀🚀 ~ bookmarkTreeNode:', bookmarkTreeNode);
 
   return (
     <div>
       <DirectoryTree
         treeData={bookmarkTreeNode[0].children}
         onSelect={(selectedKeys, e) => {
-          console.log(e, 'eee');
+          // console.log(e, 'eee');
           const { node } = e;
           if (node.url) {
             window.location.href = node.url;

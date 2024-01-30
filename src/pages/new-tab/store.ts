@@ -30,7 +30,7 @@ const useStore = create<IStore>()((set) => ({
     ? []
     : [...mockChrome.historySearchResult],
 
-  storageForShowName: '12',
+  storageForShowName: '',
 
   updateBookmarkTreeNode: () => {
     chrome.bookmarks?.getTree((_bookmarkTreeNode: any) => {

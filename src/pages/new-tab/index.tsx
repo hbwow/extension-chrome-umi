@@ -8,16 +8,20 @@ const NewTab = () => {
   const {
     bookmarkSearchResult,
     historySearchResult,
+    storageForShowName,
 
     updateBookmarkTreeNode,
     updateHistoryItem,
     updateBookmarkSearchResult,
     updateHistorySearchResult,
+    listenerStorageForShowName,
   } = useStore();
 
   useEffect(() => {
     updateBookmarkTreeNode();
     updateHistoryItem();
+
+    listenerStorageForShowName();
   }, []);
 
   const handleFinish = (values: any) => {
@@ -33,7 +37,9 @@ const NewTab = () => {
     <Layouts>
       <div className="flex-1 flex flex-col items-center pt-180">
         <h1 className="w-600 text-48 mb-24 px-12">
-          嗨<span className=" text-green-700">，</span>
+          <span>嗨</span>
+          <span className=" text-green-700">，</span>
+          <span>{storageForShowName}</span>
         </h1>
 
         <Form

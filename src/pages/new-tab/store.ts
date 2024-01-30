@@ -1,16 +1,20 @@
 import { create } from 'zustand';
 
 import mockChrome from '@/utils/mockChrome';
+import { listenerStorage, storageSyncGet } from '@/utils/storage';
 
 type IStore = {
   bookmarkTreeNode: any[]; // 所有书签
   historyItems: any[]; // 默认的最大条数历史记录
   bookmarkSearchResult: any[]; // 搜索书签结果
   historySearchResult: any[]; // 搜索历史记录结果
+  storageForShowName: string;
+
   updateBookmarkTreeNode: () => void; // 更新 所有书签
   updateHistoryItem: () => void; // 更新 默认的最大条数历史记录
   updateBookmarkSearchResult: (value: string) => void; // 更新 搜索书签结果
   updateHistorySearchResult: (value: string) => void; // 更新 搜索历史记录结果
+  listenerStorageForShowName: () => void; // 监听本地的 showName
 };
 
 const useStore = create<IStore>()((set) => ({
@@ -25,6 +29,8 @@ const useStore = create<IStore>()((set) => ({
   historySearchResult: process.env.isProd
     ? []
     : [...mockChrome.historySearchResult],
+
+  storageForShowName: '12',
 
   updateBookmarkTreeNode: () => {
     chrome.bookmarks?.getTree((_bookmarkTreeNode: any) => {
@@ -74,6 +80,19 @@ const useStore = create<IStore>()((set) => ({
         set((state) => ({ historySearchResult: _historySearchResult }));
       },
     );
+  },
+
+  listenerStorageForShowName: () => {
+    storageSyncGet(['showName']).then((res = {}) => {
+      set((state) => ({ storageForShowName: res['showName'] }));
+    });
+
+    listenerStorage({
+      key: 'showName',
+      onCallback: ({ newValue }) => {
+        set((state) => ({ storageForShowName: newValue }));
+      },
+    });
   },
 }));
 

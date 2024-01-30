@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import { Button, ConfigProvider, Space, theme } from 'antd';
 import { StyleProvider } from '@ant-design/cssinjs';
 
@@ -5,17 +7,20 @@ import logo from '../../../extension/assets/images/icon.png';
 
 import Bookmarks from './Bookmarks';
 import History from './History';
+import Setting from './Setting';
+
+import { RiSettings4Line } from 'react-icons/ri';
 
 import './index.css';
-import { useState } from 'react';
 
 interface IProps {
   children?: React.ReactNode;
 }
 
 const Layouts = ({ children }: IProps) => {
-  const [openBookmarks, setOpenBookmarks] = useState(false);
-  const [openHistory, setOpenHistory] = useState(false);
+  const [openBookmarks, setOpenBookmarks] = useState(false); // 书签
+  const [openHistory, setOpenHistory] = useState(false); // 历史记录
+  const [openSetting, setOpenSetting] = useState(false); // 设置
 
   return (
     <ConfigProvider
@@ -53,6 +58,15 @@ const Layouts = ({ children }: IProps) => {
                   >
                     历史记录
                   </Button>
+                  <Button
+                    type="text"
+                    className="text-white text-16"
+                    onClick={() => {
+                      setOpenSetting(true);
+                    }}
+                  >
+                    <RiSettings4Line />
+                  </Button>
                 </Space>
               </div>
             </div>
@@ -76,6 +90,15 @@ const Layouts = ({ children }: IProps) => {
           >
             <History />
           </History.Drawer>
+
+          <Setting.Drawer
+            open={openSetting}
+            onClose={() => {
+              setOpenSetting(false);
+            }}
+          >
+            <Setting />
+          </Setting.Drawer>
         </div>
       </StyleProvider>
     </ConfigProvider>

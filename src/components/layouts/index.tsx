@@ -59,23 +59,23 @@ const Layouts = ({ children }: IProps) => {
           </header>
           <main className="flex-1 flex">{children}</main>
 
-          <Bookmarks.Modal
+          <Bookmarks.Drawer
             open={openBookmarks}
-            onCancel={() => {
+            onClose={() => {
               setOpenBookmarks(false);
             }}
           >
             <Bookmarks />
-          </Bookmarks.Modal>
+          </Bookmarks.Drawer>
 
-          <History.Modal
+          <History.Drawer
             open={openHistory}
-            onCancel={() => {
+            onClose={() => {
               setOpenHistory(false);
             }}
           >
             <History />
-          </History.Modal>
+          </History.Drawer>
         </div>
       </StyleProvider>
     </ConfigProvider>

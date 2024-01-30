@@ -1,7 +1,7 @@
-import { Modal, ModalProps, Tree } from 'antd';
+import { Drawer, DrawerProps, Tree } from 'antd';
 
 import useStore from '@/pages/new-tab/store';
-import { MODAL_DEFAULT_WIDTH } from '@/utils/constants';
+import { DRAWER_DEFAULT_WIDTH } from '@/utils/constants';
 
 const { DirectoryTree } = Tree;
 
@@ -25,14 +25,14 @@ const Bookmarks = () => {
   );
 };
 
-Bookmarks.Modal = ({ ...rest }: ModalProps) => {
+Bookmarks.Drawer = ({ ...rest }: DrawerProps) => {
   return (
-    <Modal
+    <Drawer
       title="书签"
-      width={MODAL_DEFAULT_WIDTH}
+      width={DRAWER_DEFAULT_WIDTH}
       zIndex={9999}
       classNames={{
-        body: 'h-420 overflow-y-auto  scroll-bar-style overflow-x-hidden',
+        body: 'scroll-bar-style',
       }}
       {...rest}
     />

@@ -9,4 +9,4 @@ export const CHROME = () => {
   }
 };
 
-export const MODAL_DEFAULT_WIDTH = '60vw';
+export const DRAWER_DEFAULT_WIDTH = '35vw';

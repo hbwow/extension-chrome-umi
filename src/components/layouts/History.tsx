@@ -1,7 +1,7 @@
-import { Button, Modal, ModalProps } from 'antd';
+import { Button, Drawer, DrawerProps } from 'antd';
 
 import useStore from '@/pages/new-tab/store';
-import { MODAL_DEFAULT_WIDTH } from '@/utils/constants';
+import { DRAWER_DEFAULT_WIDTH } from '@/utils/constants';
 
 const History = () => {
   const { historyItems } = useStore();
@@ -23,14 +23,14 @@ const History = () => {
   );
 };
 
-History.Modal = ({ ...rest }: ModalProps) => {
+History.Drawer = ({ ...rest }: DrawerProps) => {
   return (
-    <Modal
+    <Drawer
       title="历史记录"
-      width={MODAL_DEFAULT_WIDTH}
+      width={DRAWER_DEFAULT_WIDTH}
       zIndex={9999}
       classNames={{
-        body: 'h-420 overflow-y-auto  scroll-bar-style overflow-x-hidden',
+        body: 'scroll-bar-style',
       }}
       {...rest}
     />

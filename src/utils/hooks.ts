@@ -10,6 +10,8 @@ export const useRegularRefreshDate = ({ delay } = { delay: 60 * 1e3 }) => {
     const calcCurHour = () => {
       timer.current = setTimeout(() => {
         setDate(dayjs());
+
+        calcCurHour();
       }, delay);
     };
 

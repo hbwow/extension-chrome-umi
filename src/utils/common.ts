@@ -1,6 +1,6 @@
-import { Dayjs } from "dayjs";
+import { Dayjs } from 'dayjs';
 
-export const greetings = (dayjs:Dayjs) => {
+export const greetings = (dayjs: Dayjs) => {
   const hour = dayjs.hour();
 
   if (hour < 6) {

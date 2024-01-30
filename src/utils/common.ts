@@ -18,6 +18,6 @@ export const greetings = (dayjs:Dayjs) => {
   } else if (hour < 22) {
     return '晚上好！';
   } else {
-    return '不早了！';
+    return '太晚了！';
   }
 };

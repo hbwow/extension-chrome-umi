@@ -40,8 +40,11 @@ module.exports = {
         420: '420px',
       },
       padding: {
+        2: '2px',
+        4: '4px',
         12: '12px',
         24: '24px',
+        64: '64px',
         180: '180px',
       },
       margin: {

@@ -1,22 +1,52 @@
-import { Drawer, DrawerProps, Input } from 'antd';
+import { Drawer, DrawerProps, Input, Radio, Space } from 'antd';
 
-import { DRAWER_DEFAULT_WIDTH } from '@/utils/constants';
-import { storageSyncSet } from '@/utils/storage';
+import { DRAWER_DEFAULT_WIDTH, SEARCH_ENGINE_OPTIONS } from '@/utils/constants';
+import { storageLocalSet, storageSyncSet } from '@/utils/storage';
 
 import useStore from '@/pages/new-tab/store';
 
 const Setting = () => {
-  const { storageForShowName } = useStore();
+  const { storageForShowName, storageForSearchEngine } = useStore();
 
-  const handelInputName = (e) => {
+  const handleChangeShowName = (e) => {
     storageSyncSet({ showName: e.target.value });
+  };
+
+  const handleChangeSearchEngine = (e) => {
+    storageLocalSet({ searchEngine: e.target.value });
   };
 
   return (
     <div className="text-white">
-      <div className="flex items-center">
-        <span>嗨，</span>
-        <Input onChange={handelInputName} defaultValue={storageForShowName} />
+      <div className="mb-24">
+        <div className="mb-6 text-gray-500">展示名称：</div>
+        <div className="flex items-center">
+          <span>嗨，</span>
+          <Input
+            onChange={handleChangeShowName}
+            defaultValue={storageForShowName}
+          />
+        </div>
+      </div>
+
+      <div>
+        <div className="mb-6 text-gray-500">搜索引擎：</div>
+        <Radio.Group
+          onChange={handleChangeSearchEngine}
+          defaultValue={storageForSearchEngine}
+        >
+          <Space direction="vertical">
+            {SEARCH_ENGINE_OPTIONS.map((item) => {
+              const { label, value } = item;
+
+              return (
+                <Radio key={value} value={value}>
+                  {label}
+                </Radio>
+              );
+            })}
+          </Space>
+        </Radio.Group>
       </div>
     </div>
   );

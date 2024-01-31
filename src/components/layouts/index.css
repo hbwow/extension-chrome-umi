@@ -12,3 +12,8 @@
   background: #383838;
   border-radius: 999px;
 }
+
+:root .lll-btn-active {
+  color: rgba(255, 255, 255, 0.85);
+  background: rgba(255, 255, 255, 0.18);
+}

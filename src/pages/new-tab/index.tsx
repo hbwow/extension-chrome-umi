@@ -4,7 +4,6 @@ import cx from 'classnames';
 import Layouts from '@/components/layouts';
 import { Button, Form, Input, Dropdown } from 'antd';
 
-import Mousetrap from 'mousetrap';
 import useStore from '@/pages/new-tab/store';
 import { useRegularRefreshDate } from '@/utils/hooks';
 import { greetings } from '@/utils/common';

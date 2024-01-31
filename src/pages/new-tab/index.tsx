@@ -128,58 +128,60 @@ const NewTab = () => {
             open={isOpen}
             dropdownRender={() => {
               return (
-                <div className="w-600 h-420 rounded-b-18 rounded-t-none border-2 border-white p-24 bg-bg-600 overflow-y-auto scroll-bar-style">
-                  {bookmarkSearchResult.length > 0 && (
-                    <div>
-                      <span className="text-bg-100">书签</span>
-                      <ul>
-                        {bookmarkSearchResult.map((item) => {
-                          const { id, title, url } = item;
+                <div className="w-600 h-420 pl-24 py-12 rounded-b-18 rounded-t-none border-2 border-white bg-bg-600">
+                  <div className="h-full overflow-y-auto scroll-bar-style ">
+                    {bookmarkSearchResult.length > 0 && (
+                      <div>
+                        <span className="text-bg-100">书签</span>
+                        <ul>
+                          {bookmarkSearchResult.map((item) => {
+                            const { id, title, url } = item;
 
-                          return (
-                            <li key={id}>
-                              <Button
-                                className={cx('flex mt-4', {
-                                  'lll-btn-active':
-                                    upDownSelected.data.url === url,
-                                })}
-                                type="text"
-                                href={url}
-                              >
-                                <span className="truncate">{title}</span>
-                              </Button>
-                            </li>
-                          );
-                        })}
-                      </ul>
-                    </div>
-                  )}
+                            return (
+                              <li key={id}>
+                                <Button
+                                  className={cx('flex mt-4', {
+                                    'lll-btn-active':
+                                      upDownSelected.data.url === url,
+                                  })}
+                                  type="text"
+                                  href={url}
+                                >
+                                  <span className="truncate">{title}</span>
+                                </Button>
+                              </li>
+                            );
+                          })}
+                        </ul>
+                      </div>
+                    )}
 
-                  {historySearchResult.length > 0 && (
-                    <div className="mt-6">
-                      <span className="text-bg-100">历史记录</span>
-                      <ul>
-                        {historySearchResult.map((item) => {
-                          const { id, title, url } = item;
+                    {historySearchResult.length > 0 && (
+                      <div className="mt-6">
+                        <span className="text-bg-100">历史记录</span>
+                        <ul>
+                          {historySearchResult.map((item) => {
+                            const { id, title, url } = item;
 
-                          return (
-                            <li key={id}>
-                              <Button
-                                className={cx('flex mt-4', {
-                                  'lll-btn-active':
-                                    upDownSelected.data.url === url,
-                                })}
-                                type="text"
-                                href={url}
-                              >
-                                <span className="truncate">{title}</span>
-                              </Button>
-                            </li>
-                          );
-                        })}
-                      </ul>
-                    </div>
-                  )}
+                            return (
+                              <li key={id}>
+                                <Button
+                                  className={cx('flex mt-4', {
+                                    'lll-btn-active':
+                                      upDownSelected.data.url === url,
+                                  })}
+                                  type="text"
+                                  href={url}
+                                >
+                                  <span className="truncate">{title}</span>
+                                </Button>
+                              </li>
+                            );
+                          })}
+                        </ul>
+                      </div>
+                    )}
+                  </div>
                 </div>
               );
             }}

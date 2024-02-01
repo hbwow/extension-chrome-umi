@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import cx from 'classnames';
 
 import Layouts from '@/components/layouts';
@@ -9,8 +9,12 @@ import { useRegularRefreshDate } from '@/utils/hooks';
 import { greetings } from '@/utils/common';
 import { SEARCH_ENGINE_ICONS } from '@/utils/constants';
 
+const LIST_ITEM_HEIGHT = 32;
+const LIST_NUMBER = 13;
+const defaultUpDownSelected = { curLength: -1, data: {} };
+
 const NewTab = () => {
-  const defaultUpDownSelected = { curLength: -1, data: {} };
+  const dropdownYAutoRef = useRef(null);
   const [upDownSelected, setUpDownSelected] = useState({
     ...defaultUpDownSelected,
   });
@@ -43,6 +47,27 @@ const NewTab = () => {
     setUpDownSelected({ ...defaultUpDownSelected });
   };
 
+  const calcScrollBar = ({ allLength, curLength, groupNumber }) => {
+    // console.log('🚀🚀🚀 ~ allLength, curLength, groupNumber :', {
+    //   allLength,
+    //   curLength,
+    //   groupNumber,
+    //   LIST_NUMBER,
+    //   LIST_ITEM_HEIGHT,
+    // });
+
+    // 有滚动条
+    if (allLength + groupNumber > LIST_NUMBER) {
+      if (curLength === 0) {
+        dropdownYAutoRef.current.scrollTop = 0;
+      }
+      if (curLength + 1 + groupNumber > LIST_NUMBER) {
+        dropdownYAutoRef.current.scrollTop =
+          (curLength + 1 + groupNumber - LIST_NUMBER) * LIST_ITEM_HEIGHT;
+      }
+    }
+  };
+
   const handleInputKeydown = (e) => {
     if (e.keyCode !== 38 && e.keyCode !== 40 && e.keyCode !== 13) {
       return;
@@ -65,7 +90,15 @@ const NewTab = () => {
     }
 
     const allSearchResult = [...bookmarkSearchResult, ...historySearchResult];
-    let nextCurLength = 0;
+    let groupNumber = 0; // 多少个组（用来计算滚动条）
+    let nextCurLength = upDownSelected.curLength; // 下标
+
+    if (bookmarkSearchResult.length > 0) {
+      groupNumber += 1;
+    }
+    if (historySearchResult.length > 0) {
+      groupNumber += 1;
+    }
 
     switch (e.keyCode) {
       case 38: {
@@ -85,6 +118,12 @@ const NewTab = () => {
         break;
       }
     }
+
+    calcScrollBar({
+      allLength: allSearchResult.length,
+      curLength: nextCurLength,
+      groupNumber,
+    });
 
     setUpDownSelected({
       curLength: nextCurLength,
@@ -127,11 +166,20 @@ const NewTab = () => {
             open={isOpen}
             dropdownRender={() => {
               return (
-                <div className="w-600 h-420 pl-24 py-12 rounded-b-18 rounded-t-none border-2 border-white bg-bg-600">
-                  <div className="h-full overflow-y-auto scroll-bar-style ">
+                <div className="w-600 pl-24 py-12 rounded-b-18 rounded-t-none border-2 border-white bg-bg-600">
+                  <div
+                    ref={dropdownYAutoRef}
+                    className="overflow-y-auto scroll-bar-style "
+                    style={{ maxHeight: `${LIST_NUMBER * LIST_ITEM_HEIGHT}px` }}
+                  >
                     {bookmarkSearchResult.length > 0 && (
                       <div>
-                        <span className="text-bg-100">书签</span>
+                        <span
+                          className="inline-flex items-center text-bg-100"
+                          style={{ minHeight: `${LIST_ITEM_HEIGHT}px` }}
+                        >
+                          书签
+                        </span>
                         <ul>
                           {bookmarkSearchResult.map((item) => {
                             const { id, title, url } = item;
@@ -139,10 +187,11 @@ const NewTab = () => {
                             return (
                               <li key={id}>
                                 <Button
-                                  className={cx('flex mt-4', {
+                                  className={cx('flex', {
                                     'lll-btn-active':
                                       upDownSelected.data.url === url,
                                   })}
+                                  style={{ minHeight: `${LIST_ITEM_HEIGHT}px` }}
                                   type="text"
                                   href={url}
                                 >
@@ -156,8 +205,13 @@ const NewTab = () => {
                     )}
 
                     {historySearchResult.length > 0 && (
-                      <div className="mt-6">
-                        <span className="text-bg-100">历史记录</span>
+                      <div>
+                        <span
+                          className="inline-flex items-center text-bg-100"
+                          style={{ minHeight: `${LIST_ITEM_HEIGHT}px` }}
+                        >
+                          历史记录
+                        </span>
                         <ul>
                           {historySearchResult.map((item) => {
                             const { id, title, url } = item;
@@ -165,10 +219,11 @@ const NewTab = () => {
                             return (
                               <li key={id}>
                                 <Button
-                                  className={cx('flex mt-4', {
+                                  className={cx('flex', {
                                     'lll-btn-active':
                                       upDownSelected.data.url === url,
                                   })}
+                                  style={{ minHeight: `${LIST_ITEM_HEIGHT}px` }}
                                   type="text"
                                   href={url}
                                 >

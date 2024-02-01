@@ -166,75 +166,81 @@ const NewTab = () => {
             open={isOpen}
             dropdownRender={() => {
               return (
-                <div className="w-600 pl-24 py-12 rounded-b-18 rounded-t-none border-2 border-white bg-bg-600">
+                <div className="w-600 py-12 rounded-b-18 rounded-t-none border-2 border-white bg-bg-600">
                   <div
                     ref={dropdownYAutoRef}
-                    className="overflow-y-auto scroll-bar-style "
+                    className="overflow-y-auto scroll-bar-style"
                     style={{ maxHeight: `${LIST_NUMBER * LIST_ITEM_HEIGHT}px` }}
                   >
-                    {bookmarkSearchResult.length > 0 && (
-                      <div>
-                        <span
-                          className="inline-flex items-center text-bg-100"
-                          style={{ minHeight: `${LIST_ITEM_HEIGHT}px` }}
-                        >
-                          书签
-                        </span>
-                        <ul>
-                          {bookmarkSearchResult.map((item) => {
-                            const { id, title, url } = item;
+                    <div className="px-16">
+                      {bookmarkSearchResult.length > 0 && (
+                        <div>
+                          <span
+                            className="inline-flex items-center text-bg-100"
+                            style={{ minHeight: `${LIST_ITEM_HEIGHT}px` }}
+                          >
+                            书签
+                          </span>
+                          <ul>
+                            {bookmarkSearchResult.map((item) => {
+                              const { id, title, url } = item;
 
-                            return (
-                              <li key={id}>
-                                <Button
-                                  className={cx('flex', {
-                                    'lll-btn-active':
-                                      upDownSelected.data.url === url,
-                                  })}
-                                  style={{ minHeight: `${LIST_ITEM_HEIGHT}px` }}
-                                  type="text"
-                                  href={url}
-                                >
-                                  <span className="truncate">{title}</span>
-                                </Button>
-                              </li>
-                            );
-                          })}
-                        </ul>
-                      </div>
-                    )}
+                              return (
+                                <li key={id}>
+                                  <Button
+                                    className={cx('flex', {
+                                      'lll-btn-active':
+                                        upDownSelected.data.url === url,
+                                    })}
+                                    style={{
+                                      minHeight: `${LIST_ITEM_HEIGHT}px`,
+                                    }}
+                                    type="text"
+                                    href={url}
+                                  >
+                                    <span className="truncate">{title}</span>
+                                  </Button>
+                                </li>
+                              );
+                            })}
+                          </ul>
+                        </div>
+                      )}
 
-                    {historySearchResult.length > 0 && (
-                      <div>
-                        <span
-                          className="inline-flex items-center text-bg-100"
-                          style={{ minHeight: `${LIST_ITEM_HEIGHT}px` }}
-                        >
-                          历史记录
-                        </span>
-                        <ul>
-                          {historySearchResult.map((item) => {
-                            const { id, title, url } = item;
+                      {historySearchResult.length > 0 && (
+                        <div>
+                          <span
+                            className="inline-flex items-center text-bg-100"
+                            style={{ minHeight: `${LIST_ITEM_HEIGHT}px` }}
+                          >
+                            历史记录
+                          </span>
+                          <ul>
+                            {historySearchResult.map((item) => {
+                              const { id, title, url } = item;
 
-                            return (
-                              <li key={id}>
-                                <Button
-                                  className={cx('flex', {
-                                    'lll-btn-active':
-                                      upDownSelected.data.url === url,
-                                  })}
-                                  style={{ minHeight: `${LIST_ITEM_HEIGHT}px` }}
-                                  type="text"
-                                  href={url}
-                                >
-                                  <span className="truncate">{title}</span>
-                                </Button>
-                              </li>
-                            );
-                          })}
-                        </ul>
-                      </div>
-                    )}
+                              return (
+                                <li key={id}>
+                                  <Button
+                                    className={cx('flex', {
+                                      'lll-btn-active':
+                                        upDownSelected.data.url === url,
+                                    })}
+                                    style={{
+                                      minHeight: `${LIST_ITEM_HEIGHT}px`,
+                                    }}
+                                    type="text"
+                                    href={url}
+                                  >
+                                    <span className="truncate">{title}</span>
+                                  </Button>
+                                </li>
+                              );
+                            })}
+                          </ul>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
               );

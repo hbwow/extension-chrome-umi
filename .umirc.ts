@@ -15,14 +15,19 @@ export default defineConfig({
     : [
         { path: '/', redirect: '/new-tab' },
         { path: '/new-tab', component: 'new-tab' },
+        { path: '/popup', component: 'popup' },
       ],
   mpa: isProd
     ? {
         getConfigFromEntryFile: true,
         entry: {
           newTab: {
-            title: 'NewTabbbbb',
+            title: 'NewTab',
             description: 'hello newTab',
+          },
+          popup: {
+            title: 'popup',
+            description: 'hello popup',
           },
         },
       }

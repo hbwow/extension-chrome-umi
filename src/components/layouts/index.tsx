@@ -1,7 +1,6 @@
 import { useState } from 'react';
 
 import { Button, ConfigProvider, Space, theme } from 'antd';
-import { StyleProvider } from '@ant-design/cssinjs';
 
 import logo from '../../../extension/assets/images/icon.png';
 
@@ -30,86 +29,84 @@ const Layouts = ({ noLayouts = false, children }: IProps) => {
         algorithm: theme.darkAlgorithm,
       }}
     >
-      <StyleProvider hashPriority="high">
-        {noLayouts === true && (
-          <div className="bg-bg-600 text-white">
-            <main>{children}</main>
-          </div>
-        )}
+      {noLayouts === true && (
+        <div className="bg-bg-600 text-white">
+          <main>{children}</main>
+        </div>
+      )}
 
-        {noLayouts === false && (
-          <div className="min-w-screen min-h-screen flex flex-col bg-bg-600 text-white text-20">
-            <header className="h-60 p-12">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center">
-                  <img className="w-24 h-20" src={logo} alt="logo" />
-                  <div className="ml-6">Memory lane</div>
-                </div>
-
-                <div>
-                  <Space>
-                    <Button
-                      type="text"
-                      className="text-white"
-                      onClick={() => {
-                        setOpenBookmarks(true);
-                      }}
-                    >
-                      书签
-                    </Button>
-                    <Button
-                      type="text"
-                      className="text-white"
-                      onClick={() => {
-                        setOpenHistory(true);
-                      }}
-                    >
-                      历史记录
-                    </Button>
-                    <Button
-                      type="text"
-                      className="text-white text-16"
-                      onClick={() => {
-                        setOpenSetting(true);
-                      }}
-                    >
-                      <RiSettings4Line />
-                    </Button>
-                  </Space>
-                </div>
+      {noLayouts === false && (
+        <div className="min-w-screen min-h-screen flex flex-col bg-bg-600 text-white text-20">
+          <header className="h-60 p-12">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center">
+                <img className="w-24 h-20" src={logo} alt="logo" />
+                <div className="ml-6">Memory lane</div>
               </div>
-            </header>
-            <main className="flex-1 flex">{children}</main>
 
-            <Bookmarks.Drawer
-              open={openBookmarks}
-              onClose={() => {
-                setOpenBookmarks(false);
-              }}
-            >
-              <Bookmarks />
-            </Bookmarks.Drawer>
+              <div>
+                <Space>
+                  <Button
+                    type="text"
+                    className="text-white"
+                    onClick={() => {
+                      setOpenBookmarks(true);
+                    }}
+                  >
+                    书签
+                  </Button>
+                  <Button
+                    type="text"
+                    className="text-white"
+                    onClick={() => {
+                      setOpenHistory(true);
+                    }}
+                  >
+                    历史记录
+                  </Button>
+                  <Button
+                    type="text"
+                    className="text-white text-16"
+                    onClick={() => {
+                      setOpenSetting(true);
+                    }}
+                  >
+                    <RiSettings4Line />
+                  </Button>
+                </Space>
+              </div>
+            </div>
+          </header>
+          <main className="flex-1 flex">{children}</main>
 
-            <History.Drawer
-              open={openHistory}
-              onClose={() => {
-                setOpenHistory(false);
-              }}
-            >
-              <History />
-            </History.Drawer>
+          <Bookmarks.Drawer
+            open={openBookmarks}
+            onClose={() => {
+              setOpenBookmarks(false);
+            }}
+          >
+            <Bookmarks />
+          </Bookmarks.Drawer>
 
-            <Setting.Drawer
-              open={openSetting}
-              onClose={() => {
-                setOpenSetting(false);
-              }}
-            >
-              <Setting />
-            </Setting.Drawer>
-          </div>
-        )}
-      </StyleProvider>
+          <History.Drawer
+            open={openHistory}
+            onClose={() => {
+              setOpenHistory(false);
+            }}
+          >
+            <History />
+          </History.Drawer>
+
+          <Setting.Drawer
+            open={openSetting}
+            onClose={() => {
+              setOpenSetting(false);
+            }}
+          >
+            <Setting />
+          </Setting.Drawer>
+        </div>
+      )}
     </ConfigProvider>
   );
 };

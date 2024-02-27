@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 
 import Layouts from '@/components/layouts';
-import { Tree, Button, Input } from 'antd';
+import { Tree, Button, Input, message } from 'antd';
 
 import useStore from '@/pages/popup/store';
 
@@ -15,19 +15,23 @@ const Popup = () => {
 
   const { bookmarkFolder, updateBookmarkFolder } = useStore();
 
+  const [messageApi, contextHolder] = message.useMessage();
+
   const handleSaveBookmark = () => {
     if (!folderId) {
-      alert('请选择书签文件夹');
+      messageApi.warning('请选择书签文件夹!');
       return;
     }
 
-    chrome.bookmarks.create({
+    chrome.bookmarks?.create({
       parentId: folderId,
       title: currentTab.title,
       url: currentTab.url,
     });
 
-    window.close();
+    messageApi.success('保存成功!', () => {
+      window.close();
+    });
   };
 
   const handleChange = (key, value) => {
@@ -49,7 +53,7 @@ const Popup = () => {
     //   console.log(tab.id);
     // });
 
-    chrome.tabs?.query({ currentWindow: true }, function (tabs) {
+    chrome.tabs?.query({ currentWindow: true, active: true }, function (tabs) {
       const tab = tabs[0];
 
       setCurrentTab(tab);
@@ -58,10 +62,11 @@ const Popup = () => {
 
   return (
     <Layouts noLayouts={true}>
+      {contextHolder}
       <div className="w-316 p-16">
         <div className="mb-12">
-          <div>
-            网址：{' '}
+          <div className='mb-2'>
+            网址：
             <Input
               value={currentTab.url}
               onChange={(e) => {
@@ -69,8 +74,8 @@ const Popup = () => {
               }}
             />
           </div>
-          <div>
-            标题：{' '}
+          <div className='mb-2'>
+            标题：
             <Input
               value={currentTab.title}
               onChange={(e) => {
@@ -78,7 +83,10 @@ const Popup = () => {
               }}
             />
           </div>
+
+          {/* <div className="mb-2">摘要： -</div> */}
         </div>
+
         <div>
           <div className="mb-6">保存至： </div>
 
@@ -92,9 +100,11 @@ const Popup = () => {
             }}
           />
 
-          <Button className="mt-6" type="primary" onClick={handleSaveBookmark}>
-            保存
-          </Button>
+          <div className="flex justify-end">
+            <Button className="mt-6" onClick={handleSaveBookmark}>
+              保存
+            </Button>
+          </div>
         </div>
       </div>
     </Layouts>

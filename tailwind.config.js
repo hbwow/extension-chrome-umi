@@ -38,6 +38,7 @@ module.exports = {
       height: {
         20: '20px',
         60: '60px',
+        316: '316px',
         420: '420px',
       },
       padding: {

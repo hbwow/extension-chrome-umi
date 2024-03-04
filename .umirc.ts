@@ -22,8 +22,8 @@ export default defineConfig({
         getConfigFromEntryFile: true,
         entry: {
           newTab: {
-            title: 'NewTab',
-            description: 'hello newTab',
+            title: 'Memory Lane',
+            description: 'hello Memory Lane',
           },
           popup: {
             title: 'popup',

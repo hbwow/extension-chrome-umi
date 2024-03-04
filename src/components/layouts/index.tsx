@@ -41,7 +41,7 @@ const Layouts = ({ noLayouts = false, children }: IProps) => {
             <div className="flex items-center justify-between">
               <div className="flex items-center">
                 <img className="w-24 h-20" src={logo} alt="logo" />
-                <div className="ml-6">Memory lane</div>
+                <div className="ml-6">Memory Lane</div>
               </div>
 
               <div>

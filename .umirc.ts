@@ -10,6 +10,28 @@ export default defineConfig({
     'process.env.NODE_ENV': process.env.NODE_ENV,
     'process.env.isProd': isProd,
   },
+  proxy: {
+    '/complete/': {
+      target: 'https://www.google.com.hk/',
+      secure: false,
+      changeOrigin: true,
+      onProxyRes: function (proxyRes, req, res) {
+        let target = 'https://www.google.com';
+        let realUrl = target + req.url;
+        proxyRes.headers['x-real-url'] = realUrl;
+      },
+    },
+    '/sugrec': {
+      target: 'https://www.baidu.com',
+      secure: false,
+      changeOrigin: true,
+      onProxyRes: function (proxyRes, req, res) {
+        let target = 'https://www.baidu.com';
+        let realUrl = target + req.url;
+        proxyRes.headers['x-real-url'] = realUrl;
+      },
+    },
+  },
   routes: isProd
     ? []
     : [

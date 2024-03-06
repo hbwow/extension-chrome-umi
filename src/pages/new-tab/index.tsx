@@ -7,7 +7,7 @@ import { Button, Form, Input, Dropdown } from 'antd';
 import useStore from '@/pages/new-tab/store';
 import { useRegularRefreshDate } from '@/utils/hooks';
 import { greetings } from '@/utils/common';
-import { SEARCH_ENGINE_ICONS } from '@/utils/constants';
+import { SEARCH_ENGINE_MAP } from '@/utils/constants';
 
 const LIST_ITEM_HEIGHT = 32;
 const LIST_NUMBER = 13;
@@ -25,30 +25,48 @@ const NewTab = () => {
     storageForShowName,
     storageForSearchEngine,
 
+    searchEngineFetchResult,
+
     updateBookmarkTreeNode,
     updateHistoryItem,
     updateBookmarkSearchResult,
     updateHistorySearchResult,
     listenerStorageForShowName,
     listenerStorageForSearchEngine,
+
+    searchEngineFetch,
   } = useStore();
 
   const { date } = useRegularRefreshDate();
 
   const handleFinish = (values: any) => {
     const q = values.search ?? '今日天气？';
-    window.location.href = storageForSearchEngine + q;
+    window.location.href =
+      SEARCH_ENGINE_MAP[storageForSearchEngine]?.jumpUrl + q;
   };
 
   const handleValuesChange = (changedValues: any, allValues: any) => {
     updateBookmarkSearchResult(changedValues.search);
     updateHistorySearchResult(changedValues.search);
 
+    searchEngineFetch(changedValues.search);
+
     setUpDownSelected({ ...defaultUpDownSelected });
   };
 
   const calcScrollBar = ({ allLength, curLength, groupNumber }) => {
     // console.log('🚀🚀🚀 ~ allLength, curLength, groupNumber :', {
+    console.log('🚀🚀🚀 ~ res:', res);
+    console.log('🚀🚀🚀 ~ res:', res);
+    console.log('🚀🚀🚀 ~ res:', res);
+    console.log('🚀🚀🚀 ~ res:', res);
+    console.log('🚀🚀🚀 ~ res:', res);
+    console.log('🚀🚀🚀 ~ res:', res);
+    console.log('🚀🚀🚀 ~ res:', res);
+    console.log('🚀🚀🚀 ~ res:', res);
+    console.log('🚀🚀🚀 ~ res:', res);
+    console.log('🚀🚀🚀 ~ res:', res);
+    console.log('🚀🚀🚀 ~ res:', res);
     //   allLength,
     //   curLength,
     //   groupNumber,
@@ -141,9 +159,11 @@ const NewTab = () => {
 
   // 是否打开
   const isOpen =
-    bookmarkSearchResult.length > 0 || historySearchResult.length > 0;
+    bookmarkSearchResult.length > 0 ||
+    historySearchResult.length > 0 ||
+    searchEngineFetchResult.length > 0;
 
-  const SearchEngineIcon = SEARCH_ENGINE_ICONS[storageForSearchEngine];
+  const SearchEngineIcon = SEARCH_ENGINE_MAP[storageForSearchEngine]?.icon;
 
   return (
     <Layouts>
@@ -167,79 +187,130 @@ const NewTab = () => {
             dropdownRender={() => {
               return (
                 <div className="w-600 py-12 rounded-b-18 rounded-t-none border-2 border-white bg-bg-600">
-                  <div
-                    ref={dropdownYAutoRef}
-                    className="overflow-y-auto scroll-bar-style"
-                    style={{ maxHeight: `${LIST_NUMBER * LIST_ITEM_HEIGHT}px` }}
-                  >
-                    <div className="px-16">
-                      {bookmarkSearchResult.length > 0 && (
-                        <div>
-                          <span
-                            className="inline-flex items-center text-bg-100"
-                            style={{ minHeight: `${LIST_ITEM_HEIGHT}px` }}
-                          >
-                            书签
-                          </span>
-                          <ul>
-                            {bookmarkSearchResult.map((item) => {
-                              const { id, title, url } = item;
+                  <div className="flex">
+                    {/* 书签 历史记录 */}
+                    <div
+                      ref={dropdownYAutoRef}
+                      className="flex-1 overflow-y-auto scroll-bar-style"
+                      style={{
+                        maxHeight: `${LIST_NUMBER * LIST_ITEM_HEIGHT}px`,
+                      }}
+                    >
+                      <div className="px-16">
+                        {bookmarkSearchResult.length > 0 && (
+                          <div>
+                            <span
+                              className="inline-flex items-center text-bg-100"
+                              style={{ minHeight: `${LIST_ITEM_HEIGHT}px` }}
+                            >
+                              书签
+                            </span>
+                            <ul>
+                              {bookmarkSearchResult.map((item) => {
+                                const { id, title, url } = item;
 
-                              return (
-                                <li key={id}>
-                                  <Button
-                                    className={cx('flex', {
-                                      'lll-btn-active':
-                                        upDownSelected.data.url === url,
-                                    })}
-                                    style={{
-                                      minHeight: `${LIST_ITEM_HEIGHT}px`,
-                                    }}
-                                    type="text"
-                                    href={url}
-                                  >
-                                    <span className="truncate">{title}</span>
-                                  </Button>
-                                </li>
-                              );
-                            })}
-                          </ul>
-                        </div>
-                      )}
+                                return (
+                                  <li key={id}>
+                                    <Button
+                                      className={cx('flex', {
+                                        'lll-btn-active':
+                                          upDownSelected.data.url === url,
+                                      })}
+                                      style={{
+                                        minHeight: `${LIST_ITEM_HEIGHT}px`,
+                                      }}
+                                      type="text"
+                                      href={url}
+                                    >
+                                      <span className="truncate">{title}</span>
+                                    </Button>
+                                  </li>
+                                );
+                              })}
+                            </ul>
+                          </div>
+                        )}
 
-                      {historySearchResult.length > 0 && (
-                        <div>
-                          <span
-                            className="inline-flex items-center text-bg-100"
-                            style={{ minHeight: `${LIST_ITEM_HEIGHT}px` }}
-                          >
-                            历史记录
-                          </span>
-                          <ul>
-                            {historySearchResult.map((item) => {
-                              const { id, title, url } = item;
+                        {historySearchResult.length > 0 && (
+                          <div>
+                            <span
+                              className="inline-flex items-center text-bg-100"
+                              style={{ minHeight: `${LIST_ITEM_HEIGHT}px` }}
+                            >
+                              历史记录
+                            </span>
+                            <ul>
+                              {historySearchResult.map((item) => {
+                                const { id, title, url } = item;
 
-                              return (
-                                <li key={id}>
-                                  <Button
-                                    className={cx('flex', {
-                                      'lll-btn-active':
-                                        upDownSelected.data.url === url,
-                                    })}
-                                    style={{
-                                      minHeight: `${LIST_ITEM_HEIGHT}px`,
-                                    }}
-                                    type="text"
-                                    href={url}
-                                  >
-                                    <span className="truncate">{title}</span>
-                                  </Button>
-                                </li>
-                              );
-                            })}
-                          </ul>
-                        </div>
-                      )}
+                                return (
+                                  <li key={id}>
+                                    <Button
+                                      className={cx('flex', {
+                                        'lll-btn-active':
+                                          upDownSelected.data.url === url,
+                                      })}
+                                      style={{
+                                        minHeight: `${LIST_ITEM_HEIGHT}px`,
+                                      }}
+                                      type="text"
+                                      href={url}
+                                    >
+                                      <span className="truncate">{title}</span>
+                                    </Button>
+                                  </li>
+                                );
+                              })}
+                            </ul>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    <div className="border-l-2 border-bg-300 my-64"></div>
+
+                    {/* 搜索引擎建议 */}
+                    <div
+                      className="w-1/3 overflow-y-auto scroll-bar-style"
+                      style={{
+                        maxHeight: `${LIST_NUMBER * LIST_ITEM_HEIGHT}px`,
+                      }}
+                    >
+                      <div className="px-16">
+                        {searchEngineFetchResult.length > 0 && (
+                          <div>
+                            <span
+                              className="inline-flex items-center text-bg-100"
+                              style={{ minHeight: `${LIST_ITEM_HEIGHT}px` }}
+                            >
+                              {storageForSearchEngine} 建议
+                            </span>
+                            <ul>
+                              {searchEngineFetchResult.map((item) => {
+                                const { id, title, url } = item;
+
+                                return (
+                                  <li key={id}>
+                                    <Button
+                                      className={cx('flex', {
+                                        'lll-btn-active':
+                                          upDownSelected.data.url === url,
+                                      })}
+                                      style={{
+                                        minHeight: `${LIST_ITEM_HEIGHT}px`,
+                                      }}
+                                      type="text"
+                                      href={url}
+                                    >
+                                      <span className="truncate">{title}</span>
+                                    </Button>
+                                  </li>
+                                );
+                              })}
+                            </ul>
+                          </div>
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>

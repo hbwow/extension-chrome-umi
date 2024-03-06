@@ -7,7 +7,7 @@ import {
   storageLocalSet,
   storageSyncGet,
 } from '@/utils/storage';
-import { SEARCH_ENGINE_OPTIONS } from '@/utils/constants';
+import { SEARCH_ENGINE_MAP, SEARCH_ENGINE_OPTIONS } from '@/utils/constants';
 
 type IStore = {
   bookmarkTreeNode: any[]; // 所有书签
@@ -17,15 +17,19 @@ type IStore = {
   storageForShowName: string;
   storageForSearchEngine: string;
 
+  searchEngineFetchResult: any[]; // 使用搜索引擎搜索结果
+
   updateBookmarkTreeNode: () => void; // 更新 所有书签
   updateHistoryItem: () => void; // 更新 默认的最大条数历史记录
   updateBookmarkSearchResult: (value: string) => void; // 更新 搜索书签结果
   updateHistorySearchResult: (value: string) => void; // 更新 搜索历史记录结果
   listenerStorageForShowName: () => void; // 监听本地的 showName
   listenerStorageForSearchEngine: () => void; // 监听本地的 searchEngine
+
+  searchEngineFetch: (value: string) => void; // 使用搜索引擎搜索
 };
 
-const useStore = create<IStore>()((set) => ({
+const useStore = create<IStore>()((set, get) => ({
   bookmarkTreeNode: [],
   historyItems: [],
   bookmarkSearchResult: [],
@@ -34,12 +38,15 @@ const useStore = create<IStore>()((set) => ({
   storageForShowName: '',
   storageForSearchEngine: '',
 
+  searchEngineFetchResult: [],
+
   updateBookmarkTreeNode: () => {
     chrome.bookmarks?.getTree((_bookmarkTreeNode: any) => {
       // console.log('🚀🚀🚀 ~ _bookmarkTreeNode:', _bookmarkTreeNode);
       set((state) => ({ bookmarkTreeNode: _bookmarkTreeNode }));
     });
 
+    // 仅开发使用mock数据
     !process.env.isProd &&
       set(() => ({ bookmarkTreeNode: [...mockChrome.bookmarkTreeNode] }));
   },
@@ -58,6 +65,7 @@ const useStore = create<IStore>()((set) => ({
       },
     );
 
+    // 仅开发使用mock数据
     !process.env.isProd &&
       set(() => ({ historyItems: [...mockChrome.historyItems] }));
   },
@@ -68,6 +76,7 @@ const useStore = create<IStore>()((set) => ({
       set((state) => ({ bookmarkSearchResult: _bookmarkSearchResult }));
     });
 
+    // 仅开发使用mock数据
     !process.env.isProd &&
       set(() => ({
         bookmarkSearchResult: [...mockChrome.bookmarkSearchResult],
@@ -94,6 +103,7 @@ const useStore = create<IStore>()((set) => ({
       },
     );
 
+    // 仅开发使用mock数据
     !process.env.isProd &&
       set(() => ({
         historySearchResult: [...mockChrome.historySearchResult],
@@ -115,7 +125,7 @@ const useStore = create<IStore>()((set) => ({
 
   listenerStorageForSearchEngine: () => {
     storageLocalGet(['searchEngine']).then((res = {}) => {
-      if (res['searchEngine']) {
+      if (res['searchEngine'] && SEARCH_ENGINE_MAP[res['searchEngine']]) {
         set((state) => ({ storageForSearchEngine: res['searchEngine'] }));
       } else {
         // 扩展程序初始化
@@ -129,9 +139,42 @@ const useStore = create<IStore>()((set) => ({
     listenerStorage({
       key: 'searchEngine',
       onCallback: ({ newValue }) => {
+        console.log('🚀🚀🚀 ~ newValue:', newValue);
         set((state) => ({ storageForSearchEngine: newValue }));
+
+        // 清空搜索引擎搜索结果
+        set((state) => ({ searchEngineFetchResult: [] }));
       },
     });
+  },
+
+  searchEngineFetch: (value) => {
+    if (!value) {
+      set((state) => ({ searchEngineFetchResult: [] }));
+
+      return;
+    }
+
+    const { storageForSearchEngine } = get();
+
+    fetch(
+      `${SEARCH_ENGINE_MAP[storageForSearchEngine].searchUrl}?${SEARCH_ENGINE_MAP[storageForSearchEngine].searchUrlParams(value)}`,
+    )
+      .then((res) => {
+        return res.text();
+      })
+      .then((data) => {
+        const result =
+          SEARCH_ENGINE_MAP[storageForSearchEngine].searchUrlResultFormat(data);
+
+        set((state) => ({ searchEngineFetchResult: result }));
+      });
+
+    // 仅开发使用mock数据
+    !process.env.isProd &&
+      set(() => ({
+        searchEngineFetchResult: [...mockChrome.historySearchResult],
+      }));
   },
 }));
 

@@ -43,7 +43,7 @@ export default defineConfig({
     ? {
         getConfigFromEntryFile: true,
         entry: {
-          newTab: {
+          'new-tab': {
             title: 'Memory Lane',
             description: 'hello Memory Lane',
           },

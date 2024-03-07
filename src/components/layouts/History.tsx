@@ -24,9 +24,11 @@ const History = () => {
 };
 
 History.Drawer = ({ ...rest }: DrawerProps) => {
+  const { historyItems } = useStore();
+
   return (
     <Drawer
-      title="历史记录"
+      title={`历史记录（最近${historyItems.length}条）`}
       width={DRAWER_DEFAULT_WIDTH}
       zIndex={9999}
       classNames={{

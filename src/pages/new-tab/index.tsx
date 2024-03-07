@@ -190,7 +190,7 @@ const NewTab = () => {
             open={isOpen}
             dropdownRender={() => {
               return (
-                <div className="w-600 py-12 rounded-b-18 rounded-t-none border-2 border-white bg-bg-600">
+                <div className="w-600 py-12 rounded-b-18 rounded-t-none border-2 border-white bg-bg-500">
                   <div className="flex">
                     {/* 书签 历史记录 */}
                     <div
@@ -339,7 +339,7 @@ const NewTab = () => {
                     setSearchInputIsBlur(true);
                   }}
                   className={cx(
-                    'w-600 h-60 pl-24 pr-64 bg-bg-600 hover:bg-bg-600 focus:bg-bg-600 border-2 border-white text-20 transition-all ease-in',
+                    'w-600 h-60 pl-24 pr-64 bg-bg-600 hover:bg-bg-500 focus:bg-bg-500 border-2 border-white hover:border-white focus:border-white text-20 transition-all ease-in',
                     {
                       'rounded-t-18 rounded-b-none': isOpen,
                       'rounded-[36px]': !isOpen,

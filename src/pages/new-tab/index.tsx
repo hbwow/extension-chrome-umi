@@ -15,9 +15,11 @@ const defaultUpDownSelected = { curLength: -1, data: {} };
 
 const NewTab = () => {
   const dropdownYAutoRef = useRef(null);
+  const searchInputRef = useRef<HTMLInputElement>(null);
   const [upDownSelected, setUpDownSelected] = useState({
     ...defaultUpDownSelected,
   });
+  const [searchInputIsBlur, setSearchInputIsBlur] = useState(true);
 
   const {
     bookmarkSearchResult,
@@ -56,17 +58,6 @@ const NewTab = () => {
 
   const calcScrollBar = ({ allLength, curLength, groupNumber }) => {
     // console.log('🚀🚀🚀 ~ allLength, curLength, groupNumber :', {
-    console.log('🚀🚀🚀 ~ res:', res);
-    console.log('🚀🚀🚀 ~ res:', res);
-    console.log('🚀🚀🚀 ~ res:', res);
-    console.log('🚀🚀🚀 ~ res:', res);
-    console.log('🚀🚀🚀 ~ res:', res);
-    console.log('🚀🚀🚀 ~ res:', res);
-    console.log('🚀🚀🚀 ~ res:', res);
-    console.log('🚀🚀🚀 ~ res:', res);
-    console.log('🚀🚀🚀 ~ res:', res);
-    console.log('🚀🚀🚀 ~ res:', res);
-    console.log('🚀🚀🚀 ~ res:', res);
     //   allLength,
     //   curLength,
     //   groupNumber,
@@ -87,13 +78,25 @@ const NewTab = () => {
   };
 
   const handleInputKeydown = (e) => {
-    if (e.keyCode !== 38 && e.keyCode !== 40 && e.keyCode !== 13) {
+    if (
+      e.keyCode !== 38 &&
+      e.keyCode !== 40 &&
+      e.keyCode !== 13
+      // && e.keyCode !== 27
+    ) {
       return;
     }
+
+    // Esc 逻辑
+    // if (e.keyCode === 27) {
+    //   searchInputRef.current?.blur();
+    //   return;
+    // }
 
     // Enter 逻辑
     if (e.keyCode === 13) {
       if (upDownSelected.curLength === -1) {
+        // 用于回车搜索
         return;
       } else {
         e.preventDefault();
@@ -159,9 +162,10 @@ const NewTab = () => {
 
   // 是否打开
   const isOpen =
-    bookmarkSearchResult.length > 0 ||
-    historySearchResult.length > 0 ||
-    searchEngineFetchResult.length > 0;
+    (bookmarkSearchResult.length > 0 ||
+      historySearchResult.length > 0 ||
+      searchEngineFetchResult.length > 0) &&
+    !searchInputIsBlur;
 
   const SearchEngineIcon = SEARCH_ENGINE_MAP[storageForSearchEngine]?.icon;
 
@@ -212,6 +216,9 @@ const NewTab = () => {
                                 return (
                                   <li key={id}>
                                     <Button
+                                      onMouseDown={(e) => {
+                                        e.preventDefault();
+                                      }}
                                       className={cx('flex', {
                                         'lll-btn-active':
                                           upDownSelected.data.url === url,
@@ -246,6 +253,9 @@ const NewTab = () => {
                                 return (
                                   <li key={id}>
                                     <Button
+                                      onMouseDown={(e) => {
+                                        e.preventDefault();
+                                      }}
                                       className={cx('flex', {
                                         'lll-btn-active':
                                           upDownSelected.data.url === url,
@@ -292,10 +302,10 @@ const NewTab = () => {
                                 return (
                                   <li key={id}>
                                     <Button
-                                      className={cx('flex', {
-                                        'lll-btn-active':
-                                          upDownSelected.data.url === url,
-                                      })}
+                                      onMouseDown={(e) => {
+                                        e.preventDefault();
+                                      }}
+                                      className={cx('flex', {})}
                                       style={{
                                         minHeight: `${LIST_ITEM_HEIGHT}px`,
                                       }}
@@ -320,12 +330,19 @@ const NewTab = () => {
             <div className="relative">
               <Form.Item name="search">
                 <Input
+                  ref={searchInputRef}
                   onKeyDown={handleInputKeydown}
+                  onFocus={() => {
+                    setSearchInputIsBlur(false);
+                  }}
+                  onBlur={() => {
+                    setSearchInputIsBlur(true);
+                  }}
                   className={cx(
-                    'w-600 h-60 pl-24 pr-64 bg-bg-600 hover:bg-bg-600 focus:bg-bg-600 border-2 border-white text-20 transition-all duration-300',
+                    'w-600 h-60 pl-24 pr-64 bg-bg-600 hover:bg-bg-600 focus:bg-bg-600 border-2 border-white text-20 transition-all ease-in',
                     {
                       'rounded-t-18 rounded-b-none': isOpen,
-                      'rounded-full': !isOpen,
+                      'rounded-[36px]': !isOpen,
                     },
                   )}
                 />
